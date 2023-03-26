@@ -1,0 +1,6 @@
+{
+    "ignore": ["dist"],
+    "quiet": false,
+    "ext": "js, ts ,json",
+    "exec": "tsc"
+}
