@@ -1,0 +1,14 @@
+.configuration {
+    width: 90%;
+    height: 40rem;
+}
+
+.configuration .player {
+    height: 60%;
+    width: 20rem;
+}
+
+.configuration .options {
+    width: 10rem;
+    height: 8rem;
+}

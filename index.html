@@ -9,20 +9,54 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 </head>
 <body>
-    <div class="main-menu page d-flex justify-content-center align-items-center flex-column">
-        <div class="menu up-div d-flex justify-content-center align-items-center flex-column">
+    <div class="page flex justify-content-center align-items-center flex-column" id="mainMenu">
+        <div class="menu up-div flex justify-content-center align-items-center flex-column">
             <h1>Tic-Tac-Toe</h1>
             <h2>Game</h2>
-            <div class="menu-btn d-flex justify-content-evenly align-items-center flex-column">
-                <button class="btn">New Game</button>
-                <button class="btn">Options</button>
-                <button class="btn">Rules</button>
+            <div class="menu-btn flex justify-content-evenly align-items-center flex-column">
+                <button class="btn" id="newGameBtn">New Game</button>
+                <button class="btn" id="rulesBtn">Rules</button>
             </div>
         </div>
     </div>
-    <div class="game page d-flex justify-content-center align-items-center flex-column">
-        <div id="board">
-
+    <div class="page flex justify-content-center align-items-center flex-column off" id="newGame">
+        <div class="configuration flex justify-content-between align-items-center flex-row">
+            <div class="player flex justify-content-center align-items-evenly flex-column up-div">
+                <p class="playerTwoName">Player One - Name</p>
+                <input type="text" id="player2Input" placeholder="Nickname">
+                <p class="coin">X</p>
+            </div>
+            <div class="options up-div flex justify-content-around align-items-center flex-column">
+                <p>OPTIONS</p>
+                <button id="startGameBtn">START</button>
+            </div>
+            <div class="player flex justify-content-center align-items-evenly flex-column up-div">
+                <p class="playerTwoName">Player One - Name</p>
+                <input type="text" id="player2Input" placeholder="Nickname">
+                <p class="coin">O</p>
+            </div>
+        </div>
+    </div>
+    <div class="page flex justify-content-center align-items-center flex-column off" id="rules">
+        <h1>RULES</h1>
+    </div>
+    <div class="page flex justify-content-center align-items-center flex-column off" id="game">
+        <div id="board" class="board flex justify-content-between align-items-center flex-column">
+            <div class="row flex align-items-center flex-row">
+                <div class="box flex justify-content-center align-items-center" id="box1"></div>
+                <div class="box flex justify-content-center align-items-center" id="box2"></div>
+                <div class="box flex justify-content-center align-items-center" id="box3"></div>
+            </div>
+            <div class="row flex align-items-center flex-row">
+                <div class="box flex justify-content-center align-items-center" id="box4"></div>
+                <div class="box flex justify-content-center align-items-center" id="box5"></div>
+                <div class="box flex justify-content-center align-items-center" id="box6"></div>
+            </div>
+            <div class="row flex align-items-center flex-row">
+                <div class="box flex justify-content-center align-items-center" id="box7"></div>
+                <div class="box flex justify-content-center align-items-center" id="box8"></div>
+                <div class="box flex justify-content-center align-items-center" id="box9"></div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>

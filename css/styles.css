@@ -1,6 +1,8 @@
 /* Imports */
 @import url('./generalStyles.css');
 @import url('./menu.css');
+@import url('./game.css');
+@import url('./newGame.css');
 
 /* Variables */
 :root {
@@ -21,6 +23,7 @@
 body {
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
 
 button, a {
