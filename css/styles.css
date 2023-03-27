@@ -1,0 +1,28 @@
+/* Imports */
+@import url('./generalStyles.css');
+@import url('./menu.css');
+
+/* Variables */
+:root {
+    --black: #000411;
+    --yellow: #efcb68;
+    --dBlue: #160C28;
+    --purple: #8D69F0;
+    --white: #e1efe6;
+}
+/* Basic Styles */
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: var(--dBlue);
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+button, a {
+    cursor: pointer;
+}
