@@ -26,6 +26,6 @@ body {
     overflow: hidden;
 }
 
-button, a {
+button, a, .box {
     cursor: pointer;
 }

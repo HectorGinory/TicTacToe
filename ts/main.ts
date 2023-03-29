@@ -1,15 +1,31 @@
 let table: any[] = []
-let boardHTML = document.getElementById('board')
-let boxArray = boardHTML.getElementsByClassName('box')
-let verticalTable: any [] = []
-let diagonalTable:any[] = []
-let mainMenuPage = document.getElementById("mainMenu")
-let newGamePage = document.getElementById("newGame")
 let gamePage = document.getElementById("game")
 let rulesPage = document.getElementById("rules")
+let boardHTML = document.getElementById('board')
+let victoryPage = document.getElementById("victory")
+let newGamePage = document.getElementById("newGame")
+let mainMenuPage = document.getElementById("mainMenu")
+let boxArray = boardHTML.getElementsByClassName('box')
+let vsIA = false
+let iaPlaces: number[][] = []
+let removedPiece = []
+class Player {
+    name: string;
+    turns: number;
+    character: string;
 
+    constructor(name, character) {
+        this.name = name;
+        this.turns = 3;
+        this.character = character;
+    }
+}
 
-let characterPlaying = "X"
+let player1 = new Player("undefined","X")
+let player2 = new Player("undefined","O")
+let playerPlaying = player1
+let players = [player1, player2]
+let winnerPlayer = new Player("undefined","O") 
 
 const createTable = (n: number): void => {
     for (let i = 0; i < n; i++) {
@@ -18,114 +34,168 @@ const createTable = (n: number): void => {
             table[i].push(" ")
         }
     }
-    updateTables()
-}
-
-const updateTables = () => {
-    verticalTable = []
-    diagonalTable = []
-    for (let i = 0; i < table.length; i++){
-        verticalTable.push([])
-        for(let j = 0; j < table.length; j++) {
-            verticalTable[i].push(table[j][i])
-        }
-    }
-    diagonalTable = [[table[0][0],table[1][1],table[2][2]],
-                    [table[0][2],table[1][1],table[2][0]]]
-    checkWin(table)
 }
 
 const checkWin = (array: any[]) => {
     array.map((row, index)=> {
         row.map((e, i) => {
-            if(e === "X" || e === "O") {
+            if(e === player1.character || e === player2.character) {
                 if(index === 0) {
                     if (e === table[1][i] && e === table[2][i]) {
-                        console.log(`partida terminada`);
+                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying))
+                        victory()
                     }
                 }
                 if(i === 0) {
                     if (e === table[index][1] && e === table[index][2]) {
-                        console.log(`partida terminada`);
+                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying))
+                        victory()
                     }
                 }
                 if(i === 1 && index === 1) {
-                    if ((e === table[0][0] && (e === table[2][2])) || (e === table[0][2] && e === table[2][0])) {
-                        console.log(`partida terminada`);
+                    if ((e === table[0][0] && (e === table[2][2])) || (e === table[0][2] && e === table[2][0])) {    
+                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying))
+                        victory()
                     }
                 }
             }
         })
     })
-    // console.log([win, winCharacter]);
+    turnsPlayer()
+}
 
+const boxOnClick = (rowArr, colArr, i) => {
+        if(playerPlaying.turns === 0 && playerPlaying.character === table[rowArr][colArr]) {
+            removePiece(rowArr,colArr,i)
+            changesGamePage(0)
+            changesGamePage(1)
+        } else if (playerPlaying.turns > 0  && table[rowArr][colArr] === " ") {
+            setPiece(rowArr,colArr,i)
+            changesGamePage(0)
+            changesGamePage(1)
+            checkWin(table)
+        } else if (vsIA === true  && playerPlaying === player2) {
+            randomIAClick()
+        }
+} 
+
+const randomIAClick = () => {
+    console.log("try");
+    console.log(iaPlaces.length);
+    if(iaPlaces.length === 3) {
+        let randomPlaceIndex = Math.round(Math.random()*2)
+        console.log(iaPlaces[randomPlaceIndex][0],iaPlaces[randomPlaceIndex][1],iaPlaces[randomPlaceIndex][2], "remove");
+        boxOnClick(iaPlaces[randomPlaceIndex][0],iaPlaces[randomPlaceIndex][1],iaPlaces[randomPlaceIndex][2])
+    } else {
+        let randomRow:number = (Math.round(Math.random()*2))
+        let randomCol:number = (Math.round(Math.random()*2))
+        let randomI:number = (randomRow * 3) + randomCol
+        console.log(randomRow, randomCol, randomI);
+        if(randomRow === removedPiece[0] && randomCol === removedPiece[1] && randomI === removedPiece[2]) {
+            randomIAClick()
+        } else {
+            boxOnClick(randomRow, randomCol, randomI)
+        }
+    }
+}
+
+const turnsPlayer = () => {
+    if(vsIA) {
+        if(playerPlaying === player1) {
+            playerPlaying = player2
+            setTimeout(() => {
+                randomIAClick()
+            }, 500)
+        } else {
+            playerPlaying = player1
+        }
+    } else {
+        if(playerPlaying === player1) {
+            playerPlaying = player2
+        } else {
+            playerPlaying = player1
+        }
+    }
+}
+
+const removePiece = (row,column,n) => {
+    if(table[row][column] !== " ") {
+        table[row][column] = " ";
+        boxArray[n].innerHTML = `<p> </p>`
+        console.log(`${playerPlaying.character} removed`);
+        playerPlaying.turns++
+        removedPiece = [row,column, n]
+        if(vsIA && playerPlaying === player2) {
+            let indexRemoved;
+            iaPlaces.map((e, i) => {
+                if(e[0] === row && e[1] === column && e[2] === n){
+                    indexRemoved = i
+                }
+            })
+            iaPlaces.slice(indexRemoved, 1)
+            setTimeout(() => {
+                randomIAClick()
+            }, 500)
+        }
+    } 
 }
 
 const setPiece = (row,column,n) => {
-    table[row][column] = characterPlaying;
-    boardHTML
-    let contain: any = document.createElement('p');
-    contain.innerHTML = characterPlaying
-    boxArray[n].appendChild(contain)
-    console.log(`${characterPlaying} placed`);
-    (characterPlaying === "X") ? characterPlaying = "O" : characterPlaying = "X"
-    updateTables()
+    if(table[row][column] === " ") {
+        table[row][column] = playerPlaying.character;
+        boxArray[n].innerHTML = `<p>${playerPlaying.character}</p>`
+        playerPlaying.turns--
+        if(vsIA && playerPlaying === player2) {
+            iaPlaces.push([row, column, n])
+        }
+        if(removedPiece.length > 0) {
+            removedPiece = []
+        }
+    } else if (vsIA) {
+        setTimeout(() => {
+            randomIAClick()
+        }, 500)
+    }
 }
 
-// EVENTS LISTENERS
-// Chancging pages
-document.getElementById("newGameBtn").addEventListener("click",() => {
-    newGamePage.classList.remove("off")
-    mainMenuPage.classList.add("off")
-})
+const changeView = (to, from) => {
+    to.classList.remove("off")
+    from.classList.add("off")
+}
 
-document.getElementById("rulesBtn").addEventListener("click",() => {
-    rulesPage.classList.remove("off")
-    mainMenuPage.classList.add("off")
-})
+const startGameBtn = () => {
+    changeView(gamePage, newGamePage)
+    createTable(3)
+    player1 = new Player(((<HTMLInputElement>document.querySelector('#player1Input')).value), "X")
+    player2 = vsIA  ? new Player("IA", "O") 
+                    : new Player(((<HTMLInputElement>document.querySelector('#player2Input')).value), "O")
+    players = [player1, player2]
+    turnsPlayer()
+    changesGamePage(0)
+    changesGamePage(1)
+}
 
+const changesGamePage = (n) => {
+    document.getElementById(`namePlayer${n+1}`).innerText = players[n].name
+    document.getElementById(`turnsLeftPlayer${n+1}`).innerText = String(players[n].turns)
+}
 
-document.getElementById("startGameBtn").addEventListener("click",()=> {
-    newGamePage.classList.add("off")
-    gamePage.classList.remove("off")
-}) 
+const victory = () => {
+    changeView(victoryPage, gamePage)
+    playerPlaying = undefined
+    document.getElementById("winner").innerText = winnerPlayer.name
+}
 
-// Coin in boxes
-document.getElementById("box1").addEventListener("click",() => {
-    setPiece(0,0,0)
-    updateTables()
-})
-document.getElementById("box2").addEventListener("click",() => {
-    setPiece(0,1,1)
-    updateTables()
-})
-document.getElementById("box3").addEventListener("click",() => {
-    setPiece(0,2,2)
-    updateTables()
-})
-document.getElementById("box4").addEventListener("click",() => {
-    setPiece(1,0,3)
-    updateTables()
-})
-document.getElementById("box5").addEventListener("click",() => {
-    setPiece(1,1,4)
-    updateTables()
-})
-document.getElementById("box6").addEventListener("click",() => {
-    setPiece(1,2,5)
-    updateTables()
-})
-document.getElementById("box7").addEventListener("click",() => {
-    setPiece(2,0,6)
-    updateTables()
-})
-document.getElementById("box8").addEventListener("click",() => {
-    setPiece(2,1,7)
-    updateTables()
-})
-document.getElementById("box9").addEventListener("click",() => {
-    setPiece(2,2,8)
-    updateTables()
-})
-createTable(3)
-console.log(table);
+const pvpBtn = () => {
+    let player2Box = document.getElementById("player2")
+    let pvpBtn = document.getElementById("vsIA")
+    if(vsIA) {
+        vsIA = !vsIA
+        player2Box.classList.remove("off")
+        pvpBtn.innerText = "Player vs IA"
+    } else {
+        vsIA = !vsIA
+        player2Box.classList.add("off")
+        pvpBtn.innerText = "Player vs Player"
+    }
+}
