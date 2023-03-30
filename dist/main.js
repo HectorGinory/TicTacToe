@@ -35,26 +35,23 @@ const checkWin = (array) => {
             if (e === player1.character || e === player2.character) {
                 if (index === 0) {
                     if (e === table[1][i] && e === table[2][i]) {
-                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying));
-                        victory();
+                        return true;
                     }
                 }
                 if (i === 0) {
                     if (e === table[index][1] && e === table[index][2]) {
-                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying));
-                        victory();
+                        return true;
                     }
                 }
                 if (i === 1 && index === 1) {
                     if ((e === table[0][0] && (e === table[2][2])) || (e === table[0][2] && e === table[2][0])) {
-                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying));
-                        victory();
+                        return true;
                     }
                 }
             }
         });
     });
-    turnsPlayer();
+    return false;
 };
 const boxOnClick = (rowArr, colArr, i) => {
     if (playerPlaying.turns === 0 && playerPlaying.character === table[rowArr][colArr]) {
@@ -66,7 +63,11 @@ const boxOnClick = (rowArr, colArr, i) => {
         setPiece(rowArr, colArr, i);
         changesGamePage(0);
         changesGamePage(1);
-        checkWin(table);
+        if (checkWin(table)) {
+            winnerPlayer = JSON.parse(JSON.stringify(playerPlaying));
+            victory();
+        }
+        turnsPlayer();
     }
     else if (vsIA === true && playerPlaying === player2) {
         randomIAClick();
@@ -75,12 +76,25 @@ const boxOnClick = (rowArr, colArr, i) => {
 const randomIAClick = () => {
     console.log("try");
     console.log(iaPlaces.length);
-    if (iaPlaces.length === 3) {
+    if (player2.turns === 0) {
         let randomPlaceIndex = Math.round(Math.random() * 2);
         console.log(iaPlaces[randomPlaceIndex][0], iaPlaces[randomPlaceIndex][1], iaPlaces[randomPlaceIndex][2], "remove");
         boxOnClick(iaPlaces[randomPlaceIndex][0], iaPlaces[randomPlaceIndex][1], iaPlaces[randomPlaceIndex][2]);
     }
     else {
+        for (let i = 0; i < table.length; i++) {
+            let checkTable = table;
+            for (let j = 0; j < table[i].length; j++) {
+                checkTable[i][j] = player1.character;
+                if (checkWin(checkTable)) {
+                    boxOnClick(i, j, (i * 3 + j));
+                }
+                checkTable[i][j] = player2.character;
+                if (checkWin(checkTable)) {
+                    boxOnClick(i, j, (i * 3 + j));
+                }
+            }
+        }
         let randomRow = (Math.round(Math.random() * 2));
         let randomCol = (Math.round(Math.random() * 2));
         let randomI = (randomRow * 3) + randomCol;
@@ -139,7 +153,6 @@ const setPiece = (row, column, n) => {
     if (table[row][column] === " ") {
         table[row][column] = playerPlaying.character;
         boxArray[n].innerHTML = `<p>${playerPlaying.character}</p>`;
-        console.log(`${playerPlaying.character} placed`);
         playerPlaying.turns--;
         if (vsIA && playerPlaying === player2) {
             iaPlaces.push([row, column, n]);
@@ -149,7 +162,6 @@ const setPiece = (row, column, n) => {
         }
     }
     else if (vsIA) {
-        console.log("retry");
         setTimeout(() => {
             randomIAClick();
         }, 500);

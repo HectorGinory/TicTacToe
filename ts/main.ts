@@ -1,4 +1,4 @@
-let table: any[] = []
+let table: string[][] = []
 let gamePage = document.getElementById("game")
 let rulesPage = document.getElementById("rules")
 let boardHTML = document.getElementById('board')
@@ -36,32 +36,29 @@ const createTable = (n: number): void => {
     }
 }
 
-const checkWin = (array: any[]) => {
+const checkWin = (array: any[]):boolean => {
     array.map((row, index)=> {
         row.map((e, i) => {
             if(e === player1.character || e === player2.character) {
                 if(index === 0) {
                     if (e === table[1][i] && e === table[2][i]) {
-                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying))
-                        victory()
+                        return true
                     }
                 }
                 if(i === 0) {
                     if (e === table[index][1] && e === table[index][2]) {
-                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying))
-                        victory()
+                        return true
                     }
                 }
                 if(i === 1 && index === 1) {
                     if ((e === table[0][0] && (e === table[2][2])) || (e === table[0][2] && e === table[2][0])) {    
-                        winnerPlayer = JSON.parse(JSON.stringify(playerPlaying))
-                        victory()
+                        return true
                     }
                 }
             }
         })
     })
-    turnsPlayer()
+    return false
 }
 
 const boxOnClick = (rowArr, colArr, i) => {
@@ -73,7 +70,11 @@ const boxOnClick = (rowArr, colArr, i) => {
             setPiece(rowArr,colArr,i)
             changesGamePage(0)
             changesGamePage(1)
-            checkWin(table)
+            if(checkWin(table)) {
+                winnerPlayer = JSON.parse(JSON.stringify(playerPlaying))
+                victory()
+            }
+            turnsPlayer()
         } else if (vsIA === true  && playerPlaying === player2) {
             randomIAClick()
         }
@@ -82,11 +83,24 @@ const boxOnClick = (rowArr, colArr, i) => {
 const randomIAClick = () => {
     console.log("try");
     console.log(iaPlaces.length);
-    if(iaPlaces.length === 3) {
+    if(player2.turns === 0) {
         let randomPlaceIndex = Math.round(Math.random()*2)
         console.log(iaPlaces[randomPlaceIndex][0],iaPlaces[randomPlaceIndex][1],iaPlaces[randomPlaceIndex][2], "remove");
         boxOnClick(iaPlaces[randomPlaceIndex][0],iaPlaces[randomPlaceIndex][1],iaPlaces[randomPlaceIndex][2])
     } else {
+        for(let i = 0; i < table.length; i++) {
+            let checkTable = table
+            for(let j = 0; j < table[i].length; j++) {
+                checkTable[i][j] = player1.character
+                if(checkWin(checkTable)) {
+                    boxOnClick(i,j,(i*3+j))
+                }
+                checkTable[i][j] = player2.character
+                if(checkWin(checkTable)) {
+                    boxOnClick(i,j,(i*3+j))
+                }
+            }
+        }
         let randomRow:number = (Math.round(Math.random()*2))
         let randomCol:number = (Math.round(Math.random()*2))
         let randomI:number = (randomRow * 3) + randomCol
