@@ -223,15 +223,19 @@ const changeView = (to, from) => {
     from.classList.add("off");
 };
 const startGameBtn = () => {
-    changeView(gamePage, newGamePage);
-    createTable(3);
-    player1 = new Player((document.querySelector('#player1Input').value), "X");
-    player2 = vsIA ? new Player("IA", "O")
-        : new Player((document.querySelector('#player2Input').value), "O");
-    players = [player1, player2];
-    turnsPlayer();
-    changesGamePage(0);
-    changesGamePage(1);
+    if (((document.querySelector('#player1Input').value.length) !== 0 && vsIA) ||
+        ((document.querySelector('#player1Input').value.length) !== 0 &&
+            (document.querySelector('#player2Input').value.length) !== 0)) {
+        changeView(gamePage, newGamePage);
+        createTable(3);
+        player1 = new Player((document.querySelector('#player1Input').value), "X");
+        player2 = vsIA ? new Player("IA", "O")
+            : new Player((document.querySelector('#player2Input').value), "O");
+        players = [player1, player2];
+        turnsPlayer();
+        changesGamePage(0);
+        changesGamePage(1);
+    }
 };
 const changesGamePage = (n) => {
     document.getElementById(`namePlayer${n + 1}`).innerText = players[n].name;
@@ -255,4 +259,39 @@ const pvpBtn = () => {
         pvpBtn.innerText = "Player vs Player";
     }
 };
-//# sourceMappingURL=main.js.map
+
+// let pokemonData = axios.get("https://pokeapi.co/api/v2/pokemon/")
+// let actualPage = pokemonData
+// let div = document.getElementById("pokemon")
+
+// const printPokemons2 = async (res) => {
+//     actualPage = res
+//     for(let i = 0; i < res.data.results.length; i++) { 
+//         let pokemonButton = document.createElement("button")
+//         let pokemonInfo = await axios.get(`${res.data.results[i].url}`)
+//         let pokemonImg = document.createElement('img')
+//         pokemonButton.classList.add("pokemon-card")
+//         pokemonImg.src = pokemonInfo.data.sprites.front_default
+//         pokemonButton.appendChild(pokemonImg)
+//         div.appendChild(pokemonButton)
+//         pokemonButton.addEventListener("click", ()=> {
+//             console.log("hola");
+//         })
+//     }
+// }
+
+// const nextPage = async ()=> {
+//     div.innerHTML = ""
+//     let nextPage = await axios.get(actualPage.data.next)
+//     printPokemons2(nextPage)
+// }
+
+// pokemonData.then(printPokemons2)
+
+// const prevPage = async ()=> {
+//     if(actualPage.data.previous) {
+//         div.innerHTML = ""
+//         let previousPage = await axios.get(actualPage.data.previous)
+//         printPokemons2(previousPage)
+//     }
+// }
