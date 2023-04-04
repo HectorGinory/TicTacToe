@@ -37,30 +37,30 @@ const createTable = (n: number): void => {
     }
 }
 
-const checkWin = (array: string[][]):boolean => {
+const checkWin = (array: string[][]):(string |boolean)[] => {
     for (let i = 0; i < array.length; i++) {
         if(array[i][0] === array[i][1] && array[i][0] === array[i][2]) {
             if(array[i][0] !== " "){
-                return true
+                return [true, array[i][0]]
             }
         }
         if(array[0][i] === array[1][i] && array[0][i] === array[2][i]) {
             if(array[0][i] !== " "){
-                return true
+                return [true, array[0][i]]
             }
         }
         if(array[1][1] === array[0][0] && array[1][1] === array[2][2]) {
             if(array[1][1] !== " "){
-                return true
+                return [true, array[1][1]]
             }
         }
         if(array[1][1] === array[0][2] && array[1][1] === array[2][0]) {
             if(array[1][1] !== " "){
-                return true
+                return [true, array[1][1]]
             }
         }
     }
-    return false
+    return [false, undefined]
 }
 
 const boxOnClick = (rowArr, colArr, i) => {
@@ -72,8 +72,13 @@ const boxOnClick = (rowArr, colArr, i) => {
             setPiece(rowArr,colArr,i)
             changesGamePage(0)
             changesGamePage(1)
-            if(checkWin(table)) {
-                winnerPlayer = JSON.parse(JSON.stringify(playerPlaying))
+            if(checkWin(table)[0]) {
+                if(checkWin(table)[1] === player1.character) {
+                    winnerPlayer = JSON.parse(JSON.stringify(player1))
+                }
+                if(checkWin(table)[1] === player2.character) {
+                    winnerPlayer = JSON.parse(JSON.stringify(player2))
+                }
                 victory()
             }
             turnsPlayer()
@@ -85,38 +90,47 @@ const randomIAClick = () => {
     console.log("try");
     console.log(iaPlaces.length);
     if(player2.turns === 0) {
-        let randomPlaceIndex = Math.round(Math.random()*2)
-        boxOnClick(iaPlaces[randomPlaceIndex][0],iaPlaces[randomPlaceIndex][1],iaPlaces[randomPlaceIndex][2])
-    } else {
-        for(let i = 0; i < table.length; i++) {
-            let checkTable = JSON.parse(JSON.stringify(table))
-            for(let j = 0; j < table[i].length; j++) {
-                if(i !== removedPiece[0] && j !== removedPiece[1] && (i*3+j) !== removedPiece[2]) {
-                    if(checkTable[i][j] === " ") {
-                        checkTable[i][j] = player1.character
-                        if(checkWin(checkTable)) {
-                            boxOnClick(i,j,(i*3+j))
-                            return null
-                        } else {
-                        checkTable[i][j] = player2.character
-                        if(checkWin(checkTable)) {
-                            boxOnClick(i,j,(i*3+j))
-                            return null
-                        }
-                        }
-                        checkTable[i][j] = " "
-                    }
-                }
+        let arrayRemove = []
+        let iRemove;
+            for(let i = 0; i < iaPlaces.length; i++) {
+                if(iaPlaces[0][i] === iaPlaces[1][i]) arrayRemove.push(2)
+                if(iaPlaces[0][i] === iaPlaces[2][i]) arrayRemove.push(1)
+                if(iaPlaces[1][i] === iaPlaces[2][i]) arrayRemove.push(0)
             }
-        }
-        let randomRow:number = (Math.round(Math.random()*2))
-        let randomCol:number = (Math.round(Math.random()*2))
-        let randomI:number = (randomRow * 3) + randomCol
-        console.log(randomRow, randomCol, randomI);
-        if(randomRow === removedPiece[0] && randomCol === removedPiece[1] && randomI === removedPiece[2]) {
-            randomIAClick()
+            if(iaPlaces[0][2] === iaPlaces[1][2]+4 || iaPlaces[0][2] === iaPlaces[1][2]-4 ||
+                iaPlaces[0][2] === iaPlaces[1][2]+8|| iaPlaces[0][2] === iaPlaces[1][2]-8 ||
+                iaPlaces[0][2] === iaPlaces[1][2]+2|| iaPlaces[0][2] === iaPlaces[1][2]-2   ) arrayRemove.push(2)
+            if(iaPlaces[0][2] === iaPlaces[2][2]+4 || iaPlaces[0][2] === iaPlaces[2][2]-4 ||
+                iaPlaces[0][2] === iaPlaces[2][2]+8|| iaPlaces[0][2] === iaPlaces[2][2]-8 ||
+                iaPlaces[0][2] === iaPlaces[2][2]+2|| iaPlaces[0][2] === iaPlaces[2][2]-2   ) arrayRemove.push(1)
+            if(iaPlaces[1][2] === iaPlaces[1][2]+4 || iaPlaces[1][2] === iaPlaces[1][2]-4 ||
+                iaPlaces[1][2] === iaPlaces[1][2]+8|| iaPlaces[1][2] === iaPlaces[1][2]-8 ||
+                iaPlaces[1][2] === iaPlaces[1][2]+2|| iaPlaces[1][2] === iaPlaces[1][2]-2   ) arrayRemove.push(0)
+            if(arrayRemove.length === 0) {
+                iRemove = Math.round(Math.random()*2)
+                boxOnClick(iaPlaces[iRemove][0],iaPlaces[iRemove][1],iaPlaces[iRemove][2])
+            } else {
+                iRemove = Math.round(Math.random()*(arrayRemove.length-1))
+                boxOnClick(iaPlaces[(arrayRemove[iRemove])][0],iaPlaces[(arrayRemove[iRemove])][1],iaPlaces[(arrayRemove[iRemove])][2])
+            } 
+    } else {
+        let places: boolean| number[]
+        if((iaChecks(player2.character)[0])){
+            places = iaChecks(player2.character)[1]
+            boxOnClick(places[0],places[1],places[2])
+        } else if (iaChecks(player1.character)[0]){
+            places = iaChecks(player1.character)[1]
+            boxOnClick(places[0],places[1],places[2])
         } else {
-            boxOnClick(randomRow, randomCol, randomI)
+            let randomRow:number = (Math.round(Math.random()*2))
+            let randomCol:number = (Math.round(Math.random()*2))
+            let randomI:number = (randomRow * 3) + randomCol
+            console.log(randomRow, randomCol, randomI);
+            if(randomRow === removedPiece[0] && randomCol === removedPiece[1] && randomI === removedPiece[2]) {
+                randomIAClick()
+            } else {
+                boxOnClick(randomRow, randomCol, randomI)
+            }
         }
     }
 }
@@ -138,6 +152,25 @@ const turnsPlayer = () => {
     }
 }
 
+const iaChecks = (character) => {
+    for(let i = 0; i < table.length; i++) {
+        let checkTable = JSON.parse(JSON.stringify(table))
+        for(let j = 0; j < table[i].length; j++) {
+            if(i !== removedPiece[0] || j !== removedPiece[1] || (i*3+j) !== removedPiece[2]) {
+                if(checkTable[i][j] === " ") {
+                    checkTable[i][j] = character
+                    if(checkWin(checkTable)[0]) {
+                        return [true,[i,j,(i*3+j)]] 
+                    } else {
+                    checkTable[i][j] = " "
+                }
+            }
+        }
+    }
+}
+return [false, undefined] 
+}
+
 const removePiece = (row,column,n) => {
     if(table[row][column] !== " ") {
         table[row][column] = " ";
@@ -153,7 +186,8 @@ const removePiece = (row,column,n) => {
                     removedPiece = [row, column, n]
                 }
             })
-            iaPlaces = iaPlaces.splice(indexRemoved)
+            iaPlaces.splice(indexRemoved,1)
+            console.log(iaPlaces + "removed")
             setTimeout(() => {
                 randomIAClick()
             }, 500)
@@ -168,6 +202,7 @@ const setPiece = (row,column,n) => {
         playerPlaying.turns--
         if(vsIA && playerPlaying === player2) {
             iaPlaces.push([row, column, n])
+            console.log(iaPlaces)
         }
         if(removedPiece.length > 0) {
             removedPiece = []
@@ -219,4 +254,3 @@ const pvpBtn = () => {
         pvpBtn.innerText = "Player vs Player"
     }
 }
-
