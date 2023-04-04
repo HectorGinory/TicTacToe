@@ -220,15 +220,19 @@ const changeView = (to, from) => {
 }
 
 const startGameBtn = () => {
-    changeView(gamePage, newGamePage)
-    createTable(3)
-    player1 = new Player(((<HTMLInputElement>document.querySelector('#player1Input')).value), "X")
-    player2 = vsIA  ? new Player("IA", "O") 
-                    : new Player(((<HTMLInputElement>document.querySelector('#player2Input')).value), "O")
-    players = [player1, player2]
-    turnsPlayer()
-    changesGamePage(0)
-    changesGamePage(1)
+    if((((<HTMLInputElement>document.querySelector('#player1Input')).value.length) !== 0 && vsIA)||
+    (((<HTMLInputElement>document.querySelector('#player1Input')).value.length) !== 0 && 
+    ((<HTMLInputElement>document.querySelector('#player2Input')).value.length) !== 0)) {
+        changeView(gamePage, newGamePage)
+        createTable(3)
+        player1 = new Player(((<HTMLInputElement>document.querySelector('#player1Input')).value), "X")
+        player2 = vsIA  ? new Player("IA", "O") 
+                        : new Player(((<HTMLInputElement>document.querySelector('#player2Input')).value), "O")
+        players = [player1, player2]
+        turnsPlayer()
+        changesGamePage(0)
+        changesGamePage(1)
+    }
 }
 
 const changesGamePage = (n) => {
