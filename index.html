@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 </head>
 <body>
-    <div class="page flex justify-content-center align-items-center flex-column" id="mainMenu">
+    <div class="page flex justify-content-center align-items-center flex-column off" id="mainMenu">
         <div class="menu up-div flex justify-content-center align-items-center flex-column">
             <h1 class="pokemonFont">Tic-Tac-Toe</h1>
             <h2>Gotta Win 'Em All</h2>
@@ -20,13 +20,13 @@
         </div>
     </div>
 
-    <div class="page flex justify-content-center align-items-center flex-column off" id="newGame">
+    <div class="page flex justify-content-center align-items-center flex-column" id="newGame">
         <div class="configuration flex justify-content-between align-items-center flex-row">
             <div class="player flex justify-content-center align-items-evenly flex-column up-div">
                 <p id="playeOneName">Player One - Name</p>
                 <input type="text" id="player1Input" placeholder="Nickname">
-                <p>Choose your starter</p>
-                <div class="starterPlayer1" id="starterPlayer1">
+
+                <div class="starterPlayer flex justify-content-evenly align-items-center" id="starterPlayer1">
 
                 </div>
             </div>
@@ -38,7 +38,10 @@
             <div class="player flex justify-content-center align-items-evenly flex-column up-div" id="player2">
                 <p id="playerTwoName">Player Two - Name</p>
                 <input type="text" id="player2Input" placeholder="Nickname">
-                <p class="coin">O</p>
+                <p>Choose your starter</p>
+                <div class="starterPlayer flex justify-content-evenly align-items-center" id="starterPlayer2">
+
+                </div>
             </div>
         </div>
     </div>
@@ -80,9 +83,8 @@
     <div class="page flex justify-content-center align-items-center flex-column off" id="victory">
         <p>Ha ganado <span id="winner"></span></p>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
     <script src="dist/main.js"></script>
-    <script src="dist/pokemon.js"></script>
 </body>
 </html>

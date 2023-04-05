@@ -1,4 +1,4 @@
-let table = [];
+let table = []
 let gamePage = document.getElementById("game");
 let rulesPage = document.getElementById("rules");
 let boardHTML = document.getElementById('board');
@@ -10,17 +10,25 @@ let vsIA = false;
 let iaPlaces = [];
 let removedPiece = [];
 class Player {
-    constructor(name, character) {
+    constructor(name, character, imageSrc) {
         this.name = name;
         this.turns = 3;
         this.character = character;
+        this.imageSrc = imageSrc;
     }
 }
-let player1 = new Player("undefined", "X");
-let player2 = new Player("undefined", "O");
+let pokemonData = axios.get("https://pokeapi.co/api/v2/pokemon/")
+let actualPage;
+let nextPage;
+let player1starter = document.getElementById("starterPlayer1")
+let player2starter = document.getElementById("starterPlayer2")
+let player1 = new Player("undefined", "X",undefined);
+let player2 = new Player("undefined", "O",undefined);
+let player1pokemon;
+let player2pokemon;
 let playerPlaying = player1;
 let players = [player1, player2];
-let winnerPlayer = new Player("undefined", "O");
+let winnerPlayer = new Player("undefined", "O",undefined);
 const createTable = (n) => {
     for (let i = 0; i < n; i++) {
         table.push([]);
@@ -180,7 +188,6 @@ const removePiece = (row, column, n) => {
     if (table[row][column] !== " ") {
         table[row][column] = " ";
         boxArray[n].innerHTML = `<p> </p>`;
-        console.log(`${playerPlaying.character} removed`);
         playerPlaying.turns++;
         removedPiece = [row, column, n];
         if (vsIA && playerPlaying === player2) {
@@ -202,7 +209,9 @@ const removePiece = (row, column, n) => {
 const setPiece = (row, column, n) => {
     if (table[row][column] === " ") {
         table[row][column] = playerPlaying.character;
-        boxArray[n].innerHTML = `<p>${playerPlaying.character}</p>`;
+        let image = document.createElement("img")
+        image.src = playerPlaying.imageSrc
+        boxArray[n].appendChild(image)
         playerPlaying.turns--;
         if (vsIA && playerPlaying === player2) {
             iaPlaces.push([row, column, n]);
@@ -211,8 +220,7 @@ const setPiece = (row, column, n) => {
         if (removedPiece.length > 0) {
             removedPiece = [];
         }
-    }
-    else if (vsIA) {
+    } else if (vsIA) {
         setTimeout(() => {
             randomIAClick();
         }, 500);
@@ -223,14 +231,19 @@ const changeView = (to, from) => {
     from.classList.add("off");
 };
 const startGameBtn = () => {
-    if (((document.querySelector('#player1Input').value.length) !== 0 && vsIA) ||
+    if (((document.querySelector('#player1Input').value.length) !== 0 && vsIA && player1pokemon !== undefined) ||
         ((document.querySelector('#player1Input').value.length) !== 0 &&
-            (document.querySelector('#player2Input').value.length) !== 0)) {
+            (document.querySelector('#player2Input').value.length) !== 0 &&
+            player1pokemon !== undefined && player2pokemon !== undefined)) {
         changeView(gamePage, newGamePage);
         createTable(3);
-        player1 = new Player((document.querySelector('#player1Input').value), "X");
-        player2 = vsIA ? new Player("IA", "O")
-            : new Player((document.querySelector('#player2Input').value), "O");
+        if(vsIA) {
+            let randomNumber = Math.round(Math.random()*(document.getElementsByClassName("pokemon-card").length/2))
+            player2pokemon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${randomNumber}.png`
+        }
+        player1 = new Player((document.querySelector('#player1Input').value), "X", player1pokemon);
+        player2 = vsIA ? new Player("IA", "O", player2pokemon)
+            : new Player((document.querySelector('#player2Input').value), "O", player2pokemon);
         players = [player1, player2];
         turnsPlayer();
         changesGamePage(0);
@@ -260,38 +273,36 @@ const pvpBtn = () => {
     }
 };
 
-// let pokemonData = axios.get("https://pokeapi.co/api/v2/pokemon/")
-// let actualPage = pokemonData
-// let div = document.getElementById("pokemon")
+const printPokemons = async (res) => {
+    nextPage = await axios.get(actualPage.data.next)
+    for(let i = 0; i < res.data.results.length; i++) { 
+        let pokemonButton = document.createElement("button")
+        let pokemonInfo = await axios.get(`${res.data.results[i].url}`)
+        let pokemonImg = document.createElement('img')
+        pokemonButton.classList.add("pokemon-card")
+        pokemonImg.src = pokemonInfo.data.sprites.front_default
+        pokemonButton.appendChild(pokemonImg)
+        player1starter.appendChild(pokemonButton)
+        pokemonButton.addEventListener("click", ()=> {
+            player1pokemon = pokemonInfo.data.sprites.front_default
+        })
+    }
+    for(let i = 0; i < res.data.results.length; i++) { 
+        let pokemonButton = document.createElement("button")
+        let pokemonInfo = await axios.get(`${res.data.results[i].url}`)
+        let pokemonImg = document.createElement('img')
+        pokemonButton.classList.add("pokemon-card")
+        pokemonImg.src = pokemonInfo.data.sprites.front_default
+        pokemonButton.appendChild(pokemonImg)
+        player2starter.appendChild(pokemonButton)
+        pokemonButton.addEventListener("click", ()=> {
+            player2pokemon = pokemonInfo.data.sprites.front_default
+        })
+    }
+}
 
-// const printPokemons2 = async (res) => {
-//     actualPage = res
-//     for(let i = 0; i < res.data.results.length; i++) { 
-//         let pokemonButton = document.createElement("button")
-//         let pokemonInfo = await axios.get(`${res.data.results[i].url}`)
-//         let pokemonImg = document.createElement('img')
-//         pokemonButton.classList.add("pokemon-card")
-//         pokemonImg.src = pokemonInfo.data.sprites.front_default
-//         pokemonButton.appendChild(pokemonImg)
-//         div.appendChild(pokemonButton)
-//         pokemonButton.addEventListener("click", ()=> {
-//             console.log("hola");
-//         })
-//     }
-// }
-
-// const nextPage = async ()=> {
-//     div.innerHTML = ""
-//     let nextPage = await axios.get(actualPage.data.next)
-//     printPokemons2(nextPage)
-// }
-
-// pokemonData.then(printPokemons2)
-
-// const prevPage = async ()=> {
-//     if(actualPage.data.previous) {
-//         div.innerHTML = ""
-//         let previousPage = await axios.get(actualPage.data.previous)
-//         printPokemons2(previousPage)
-//     }
-// }
+pokemonData.then(async (res) => {
+    actualPage = res
+    await printPokemons(actualPage)
+    await printPokemons(nextPage)
+})

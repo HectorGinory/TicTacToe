@@ -12,3 +12,21 @@
     width: 10rem;
     height: 8rem;
 }
+
+.starterPlayer {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+    height: 10rem;
+    border: 1px solid black;
+}
+
+.starterPlayer button {
+    width: 5rem;
+    height: 5rem;
+}
+
+.starterPlayer button img {
+    width: 100%;
+}
