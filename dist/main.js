@@ -280,10 +280,16 @@ const printPokemons = async (res) => {
         let pokemonInfo = await axios.get(`${res.data.results[i].url}`)
         let pokemonImg = document.createElement('img')
         pokemonButton.classList.add("pokemon-card")
+        pokemonButton.setAttribute("id",`button${i}player1`)
         pokemonImg.src = pokemonInfo.data.sprites.front_default
         pokemonButton.appendChild(pokemonImg)
         player1starter.appendChild(pokemonButton)
         pokemonButton.addEventListener("click", ()=> {
+            let index = i
+            for(let i = 0; i < player1starter.getElementsByClassName("pokemon-card").length; i++) {
+                player1starter.getElementsByClassName("pokemon-card")[i].classList.remove("selected")
+            }
+            document.getElementById(`button${index}player1`).classList.add("selected")
             player1pokemon = pokemonInfo.data.sprites.front_default
         })
     }
@@ -292,10 +298,16 @@ const printPokemons = async (res) => {
         let pokemonInfo = await axios.get(`${res.data.results[i].url}`)
         let pokemonImg = document.createElement('img')
         pokemonButton.classList.add("pokemon-card")
+        pokemonButton.setAttribute("id",`button${i}player2`)
         pokemonImg.src = pokemonInfo.data.sprites.front_default
         pokemonButton.appendChild(pokemonImg)
         player2starter.appendChild(pokemonButton)
         pokemonButton.addEventListener("click", ()=> {
+            let index = i
+            for(let i = 0; i < player2starter.getElementsByClassName("pokemon-card").length; i++) {
+                player2starter.getElementsByClassName("pokemon-card")[i].classList.remove("selected")
+            }
+            document.getElementById(`button${index}player2`).classList.add("selected")
             player2pokemon = pokemonInfo.data.sprites.front_default
         })
     }

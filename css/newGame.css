@@ -4,8 +4,10 @@
 }
 
 .configuration .player {
-    height: 60%;
+    height: 30rem;
     width: 20rem;
+    background: radial-gradient(circle at 12% 9%,rgb(51, 214, 255) 2%, rgb(25, 122, 233) 4%, rgb(0, 89, 255) 5%, transparent 5.4%),
+                linear-gradient(to top, rgb(172, 0, 0), rgb(218, 1, 1));
 }
 
 .configuration .options {
@@ -19,14 +21,31 @@
     flex-wrap: wrap;
     overflow: auto;
     height: 10rem;
-    border: 1px solid black;
+    background: black;
+    padding-top: .5rem;
+    border-radius: .5rem;
 }
 
+
 .starterPlayer button {
-    width: 5rem;
-    height: 5rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    margin-bottom: .5rem;
+    border: 1px solid rgba(0, 0, 0, 0.082);
+}
+
+.starterPlayer .selected {
+    border: 2px solid rgba(9, 255, 0, 0.692);
+    background: rgb(245, 245, 187);
+}
+
+.starterPlayer button:hover {
+    border: 2px solid rgb(0, 204, 255);
 }
 
 .starterPlayer button img {
-    width: 100%;
+    width: 98%;
+    transition: .5s;
 }
+

@@ -8,13 +8,10 @@
 }
 
 .up-div {
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.489), rgba(255, 255, 255, 0.189), rgba(255, 255, 255, 0.489));
-    border: .1rem solid rgba(0, 0, 0, 0.178);
-    border-radius: 1rem;
-    box-shadow: .2rem .2rem .2rem rgba(0, 0, 0, 0.158),
-                -.2rem -.2rem .4rem rgba(255, 255, 255, 0.067),
-                inset -.1rem -.1rem .1rem rgba(0, 0, 0, 0.267),
-                inset .1rem .1rem .1rem rgba(255, 255, 255, 0.067);
+    border: .3rem solid rgb(68, 0, 0);
+    border-radius: .5rem;
+    background: linear-gradient(to top, rgb(172, 0, 0), rgb(218, 1, 1));
+    box-shadow: inset 0 0 .9rem rgba(0, 0, 0, 0.308)
 }
 
 .flex {
