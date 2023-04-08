@@ -4,15 +4,8 @@
 @import url('./game.css');
 @import url('./newGame.css');
 @import url('./victory.css');
+@import url('./rules.css');
 
-/* Variables */
-:root {
-    --black: #000411;
-    --yellow: #efcb68;
-    --dBlue: #160C28;
-    --purple: #8D69F0;
-    --white: #e1efe6;
-}
 /* Basic Styles */
 * {
     padding: 0;

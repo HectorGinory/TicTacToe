@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 </head>
 <body>
-    <div class="page flex justify-content-center align-items-center flex-column" id="mainMenu">
+    <div class="page flex justify-content-center align-items-center flex-column " id="mainMenu">
         <div class="menu flex justify-content-center align-items-center flex-column">
             <h1 class="pokemonFont">Tic-Tac-Toe</h1>
             <h2>Gotta Win 'Em All</h2>
@@ -35,6 +35,7 @@
                 <button id="vsIA" onclick="pvpBtn()">Player vs IA</button>
                 <p id="alert">Fill in the boxes</p>
                 <button id="startGameBtn" onclick="startGameBtn()">START</button>
+                <button onclick="changeView(mainMenuPage, newGamePage)">Main menu</button>
             </div>
             <div class="player flex justify-content-center align-items-center flex-column up-div" id="player2">
                 <p class="titlePlayer" id="playerTwoName">Player Two - Name</p>
@@ -55,7 +56,19 @@
     </div>
 
     <div class="page flex justify-content-center align-items-center flex-column off" id="rules">
-        <h1>RULES</h1>
+        <div class="up-div flex justify-content-center align-items-center rule-container">
+            <div class="screen flex justify-content-start align-items-center flex-column">
+                <h2>How to play</h2>
+                <p>The game is played on a grid that's 3 squares by 3 squares</p>
+                <p>You choose a pokemon as a coin to play, Player take turns putting their coin in a empty space</p>
+                <p>When you have 3 of your coins in the board, you will remove one and place it in a empty square</p>
+                <p>The first player to get 3 of her coins in a row (up, down, across, or diagonally) is the winner.</p>
+            </div>
+            <div class="btn-rules flex justify-content-center align-items-center flex-column">
+                <button onclick="changeView(mainMenuPage, rulesPage)">Main menu</button>
+                <button onclick="changeView(newGamePage, rulesPage)">New Game</button>
+            </div>
+        </div>
     </div>
 
     <div class="page flex justify-content-center align-items-center flex-column off" id="game">

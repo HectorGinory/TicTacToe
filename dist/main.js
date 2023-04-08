@@ -18,12 +18,12 @@ class Player {
         this.imageSrc = imageSrc;
     }
 }
-let player1pokemon;
-let player2pokemon;
-let players = [player1, player2];
 let player1 = new Player("undefined", "X",undefined);
 let player2 = new Player("undefined", "O",undefined);
 let winnerPlayer = new Player("undefined", "O",undefined);
+let player1pokemon;
+let player2pokemon;
+let players = [player1, player2];
 
 // Variables for the game
 let table = []

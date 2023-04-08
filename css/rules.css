@@ -1,0 +1,27 @@
+.rule-container {
+    width: 80%;
+    height: 30rem;
+    background: linear-gradient(to top, rgb(172, 0, 0), rgb(218, 1, 1));
+}
+
+.rule-container .screen {
+    width: 80%;
+    height: 70%;
+    overflow: auto;
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+.rule-container button {
+    margin: 1rem 0;
+    padding: .3rem .6rem;
+    border-radius: 1rem;
+    transition: .3s;
+}
+
+.rule-container p {
+    margin: 1rem 0;
+}
+.rule-container button:hover {
+    background: grey;
+}

@@ -13,7 +13,8 @@
 }
 .configuration .player {
     height: 30rem;
-    width: 20rem;
+    width: 30%;
+    overflow: hidden;
 }
 
 .configuration .player p {
@@ -27,7 +28,7 @@
     text-align: center;
 }
 .configuration .options {
-    width: 15rem;
+    width: 20%;
     height: 20rem;
 }
 
