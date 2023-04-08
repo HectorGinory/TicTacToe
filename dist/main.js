@@ -7,6 +7,7 @@ let newGamePage = document.getElementById("newGame");
 let mainMenuPage = document.getElementById("mainMenu");
 let boxArray = boardHTML.getElementsByClassName('box');
 let vsIA = false;
+let hardIA = false;
 let iaPlaces = [];
 let removedPiece = [];
 class Player {
@@ -29,7 +30,9 @@ let player2pokemon;
 let playerPlaying = player1;
 let players = [player1, player2];
 let winnerPlayer = new Player("undefined", "O",undefined);
+
 const createTable = (n) => {
+    table = []
     for (let i = 0; i < n; i++) {
         table.push([]);
         for (let j = 0; j < n; j++) {
@@ -88,66 +91,72 @@ const boxOnClick = (rowArr, colArr, i) => {
     }
 };
 const randomIAClick = () => {
-    console.log("try");
-    console.log(iaPlaces.length);
     if (player2.turns === 0) {
         let arrayRemove = [];
         let iRemove;
-        for (let i = 0; i < iaPlaces.length; i++) {
-            if (iaPlaces[0][i] === iaPlaces[1][i])
+        if(hardIA) {
+            for (let i = 0; i < iaPlaces.length; i++) {
+                if (iaPlaces[0][i] === iaPlaces[1][i])
+                    arrayRemove.push(2);
+                if (iaPlaces[0][i] === iaPlaces[2][i])
+                    arrayRemove.push(1);
+                if (iaPlaces[1][i] === iaPlaces[2][i])
+                    arrayRemove.push(0);
+            }
+            if (iaPlaces[0][2] === iaPlaces[1][2] + 4 || iaPlaces[0][2] === iaPlaces[1][2] - 4 ||
+                iaPlaces[0][2] === iaPlaces[1][2] + 8 || iaPlaces[0][2] === iaPlaces[1][2] - 8 ||
+                iaPlaces[0][2] === iaPlaces[1][2] + 2 || iaPlaces[0][2] === iaPlaces[1][2] - 2)
                 arrayRemove.push(2);
-            if (iaPlaces[0][i] === iaPlaces[2][i])
+            if (iaPlaces[0][2] === iaPlaces[2][2] + 4 || iaPlaces[0][2] === iaPlaces[2][2] - 4 ||
+                iaPlaces[0][2] === iaPlaces[2][2] + 8 || iaPlaces[0][2] === iaPlaces[2][2] - 8 ||
+                iaPlaces[0][2] === iaPlaces[2][2] + 2 || iaPlaces[0][2] === iaPlaces[2][2] - 2)
                 arrayRemove.push(1);
-            if (iaPlaces[1][i] === iaPlaces[2][i])
+            if (iaPlaces[1][2] === iaPlaces[1][2] + 4 || iaPlaces[1][2] === iaPlaces[1][2] - 4 ||
+                iaPlaces[1][2] === iaPlaces[1][2] + 8 || iaPlaces[1][2] === iaPlaces[1][2] - 8 ||
+                iaPlaces[1][2] === iaPlaces[1][2] + 2 || iaPlaces[1][2] === iaPlaces[1][2] - 2)
                 arrayRemove.push(0);
         }
-        if (iaPlaces[0][2] === iaPlaces[1][2] + 4 || iaPlaces[0][2] === iaPlaces[1][2] - 4 ||
-            iaPlaces[0][2] === iaPlaces[1][2] + 8 || iaPlaces[0][2] === iaPlaces[1][2] - 8 ||
-            iaPlaces[0][2] === iaPlaces[1][2] + 2 || iaPlaces[0][2] === iaPlaces[1][2] - 2)
-            arrayRemove.push(2);
-        if (iaPlaces[0][2] === iaPlaces[2][2] + 4 || iaPlaces[0][2] === iaPlaces[2][2] - 4 ||
-            iaPlaces[0][2] === iaPlaces[2][2] + 8 || iaPlaces[0][2] === iaPlaces[2][2] - 8 ||
-            iaPlaces[0][2] === iaPlaces[2][2] + 2 || iaPlaces[0][2] === iaPlaces[2][2] - 2)
-            arrayRemove.push(1);
-        if (iaPlaces[1][2] === iaPlaces[1][2] + 4 || iaPlaces[1][2] === iaPlaces[1][2] - 4 ||
-            iaPlaces[1][2] === iaPlaces[1][2] + 8 || iaPlaces[1][2] === iaPlaces[1][2] - 8 ||
-            iaPlaces[1][2] === iaPlaces[1][2] + 2 || iaPlaces[1][2] === iaPlaces[1][2] - 2)
-            arrayRemove.push(0);
         if (arrayRemove.length === 0) {
             iRemove = Math.round(Math.random() * 2);
             boxOnClick(iaPlaces[iRemove][0], iaPlaces[iRemove][1], iaPlaces[iRemove][2]);
-        }
-        else {
+        } else {
             iRemove = Math.round(Math.random() * (arrayRemove.length - 1));
             boxOnClick(iaPlaces[(arrayRemove[iRemove])][0], iaPlaces[(arrayRemove[iRemove])][1], iaPlaces[(arrayRemove[iRemove])][2]);
         }
-    }
-    else {
-        let places;
-        if ((iaChecks(player2.character)[0])) {
-            places = iaChecks(player2.character)[1];
-            boxOnClick(places[0], places[1], places[2]);
-        }
-        else if (iaChecks(player1.character)[0]) {
-            places = iaChecks(player1.character)[1];
-            boxOnClick(places[0], places[1], places[2]);
-        }
-        else {
+    } else {
+        if(hardIA){
+            let places;
+            if ((iaChecks(player2.character)[0])) {
+                places = iaChecks(player2.character)[1];
+                boxOnClick(places[0], places[1], places[2]);
+                return null
+            }
+            else if (iaChecks(player1.character)[0]) {
+                places = iaChecks(player1.character)[1];
+                boxOnClick(places[0], places[1], places[2]);
+                return null
+            }
+         }
             let randomRow = (Math.round(Math.random() * 2));
             let randomCol = (Math.round(Math.random() * 2));
             let randomI = (randomRow * 3) + randomCol;
-            console.log(randomRow, randomCol, randomI);
             if (randomRow === removedPiece[0] && randomCol === removedPiece[1] && randomI === removedPiece[2]) {
                 randomIAClick();
             }
             else {
                 boxOnClick(randomRow, randomCol, randomI);
             }
-        }
     }
 };
 const turnsPlayer = () => {
     if (vsIA) {
+        if(playerPlaying !== player1) {
+            document.getElementById("gamePlayer1").classList.add("turnToPlay")
+            document.getElementById("gamePlayer2").classList.remove("turnToPlay")
+        } else {
+            document.getElementById("gamePlayer1").classList.remove("turnToPlay")
+            document.getElementById("gamePlayer2").classList.add("turnToPlay")
+        }
         if (playerPlaying === player1) {
             playerPlaying = player2;
             randomIAClick();
@@ -157,6 +166,13 @@ const turnsPlayer = () => {
         }
     }
     else {
+        if(playerPlaying !== player1) {
+            document.getElementById("gamePlayer1").classList.add("turnToPlay")
+            document.getElementById("gamePlayer2").classList.remove("turnToPlay")
+        } else {
+            document.getElementById("gamePlayer1").classList.remove("turnToPlay")
+            document.getElementById("gamePlayer2").classList.add("turnToPlay")
+        }
         if (playerPlaying === player1) {
             playerPlaying = player2;
         }
@@ -164,6 +180,7 @@ const turnsPlayer = () => {
             playerPlaying = player1;
         }
     }
+
 };
 const iaChecks = (character) => {
     for (let i = 0; i < table.length; i++) {
@@ -199,10 +216,7 @@ const removePiece = (row, column, n) => {
                 }
             });
             iaPlaces.splice(indexRemoved, 1);
-            console.log(iaPlaces + "removed");
-            setTimeout(() => {
-                randomIAClick();
-            }, 500);
+            randomIAClick();
         }
     }
 };
@@ -215,15 +229,12 @@ const setPiece = (row, column, n) => {
         playerPlaying.turns--;
         if (vsIA && playerPlaying === player2) {
             iaPlaces.push([row, column, n]);
-            console.log(iaPlaces);
         }
         if (removedPiece.length > 0) {
             removedPiece = [];
         }
     } else if (vsIA) {
-        setTimeout(() => {
             randomIAClick();
-        }, 500);
     }
 };
 const changeView = (to, from) => {
@@ -231,6 +242,11 @@ const changeView = (to, from) => {
     from.classList.add("off");
 };
 const startGameBtn = () => {
+    for(let i = 0; i < boxArray.length; i++) {
+        boxArray[i].innerHTML = ""
+    }
+    iaPlaces = [];
+    removedPiece = [];
     if (((document.querySelector('#player1Input').value.length) !== 0 && vsIA && player1pokemon !== undefined) ||
         ((document.querySelector('#player1Input').value.length) !== 0 &&
             (document.querySelector('#player2Input').value.length) !== 0 &&
@@ -248,6 +264,8 @@ const startGameBtn = () => {
         turnsPlayer();
         changesGamePage(0);
         changesGamePage(1);
+    } else {
+        document.getElementById("alert").innerText = "Choose a nickname and a pokemon"
     }
 };
 const changesGamePage = (n) => {
@@ -256,60 +274,84 @@ const changesGamePage = (n) => {
 };
 const victory = () => {
     changeView(victoryPage, gamePage);
+    let image = document.createElement("img")
+    image.src = winnerPlayer.imageSrc
     document.getElementById("winner").innerText = winnerPlayer.name;
+    document.getElementById("pokemon-img").innerHTML = `<img src="${winnerPlayer.imageSrc}"></img>`
+    player1 = new Player("undefined", "X",undefined);
+    player2 = new Player("undefined", "O",undefined);
 };
 const pvpBtn = () => {
     let player2Box = document.getElementById("player2");
     let pvpBtn = document.getElementById("vsIA");
+    let playerIABox = document.getElementById("playerIA");
     if (vsIA) {
         vsIA = !vsIA;
         player2Box.classList.remove("off");
+        playerIABox.classList.add("off");
         pvpBtn.innerText = "Player vs IA";
     }
     else {
         vsIA = !vsIA;
         player2Box.classList.add("off");
+        playerIABox.classList.remove("off");
         pvpBtn.innerText = "Player vs Player";
     }
 };
-
 const printPokemons = async (res) => {
     nextPage = await axios.get(actualPage.data.next)
-    for(let i = 0; i < res.data.results.length; i++) { 
+    for(let i = 0; i < res.data.results.length; i++) {
+        let position = (player1starter.getElementsByClassName("pokemon-card").length)- 1 
         let pokemonButton = document.createElement("button")
         let pokemonInfo = await axios.get(`${res.data.results[i].url}`)
         let pokemonImg = document.createElement('img')
         pokemonButton.classList.add("pokemon-card")
-        pokemonButton.setAttribute("id",`button${i}player1`)
+        pokemonButton.setAttribute("id",`button${position}player1`)
         pokemonImg.src = pokemonInfo.data.sprites.front_default
         pokemonButton.appendChild(pokemonImg)
         player1starter.appendChild(pokemonButton)
         pokemonButton.addEventListener("click", ()=> {
-            let index = i
-            for(let i = 0; i < player1starter.getElementsByClassName("pokemon-card").length; i++) {
-                player1starter.getElementsByClassName("pokemon-card")[i].classList.remove("selected")
+            if(player2pokemon !== pokemonInfo.data.sprites.front_default) {
+                for(let i = 0; i < player1starter.getElementsByClassName("pokemon-card").length; i++) {
+                    player1starter.getElementsByClassName("pokemon-card")[i].classList.remove("selected")
+                }
+                document.getElementById(`button${position}player1`).classList.add("selected")
+                player1pokemon = pokemonInfo.data.sprites.front_default
+            } else {
+                document.getElementById("alert").innerText = "Choose a different pokemon"
             }
-            document.getElementById(`button${index}player1`).classList.add("selected")
-            player1pokemon = pokemonInfo.data.sprites.front_default
         })
     }
     for(let i = 0; i < res.data.results.length; i++) { 
+        let position = ((player2starter.getElementsByClassName("pokemon-card").length)- 1) 
         let pokemonButton = document.createElement("button")
         let pokemonInfo = await axios.get(`${res.data.results[i].url}`)
         let pokemonImg = document.createElement('img')
         pokemonButton.classList.add("pokemon-card")
-        pokemonButton.setAttribute("id",`button${i}player2`)
+        pokemonButton.setAttribute("id",`button${position}player2`)
         pokemonImg.src = pokemonInfo.data.sprites.front_default
         pokemonButton.appendChild(pokemonImg)
         player2starter.appendChild(pokemonButton)
         pokemonButton.addEventListener("click", ()=> {
-            let index = i
-            for(let i = 0; i < player2starter.getElementsByClassName("pokemon-card").length; i++) {
-                player2starter.getElementsByClassName("pokemon-card")[i].classList.remove("selected")
+            if(player1pokemon !== pokemonInfo.data.sprites.front_default) {
+                for(let i = 0; i < player2starter.getElementsByClassName("pokemon-card").length; i++) {
+                    player2starter.getElementsByClassName("pokemon-card")[i].classList.remove("selected")
+                }
+                document.getElementById(`button${position}player2`).classList.add("selected")
+                player2pokemon = pokemonInfo.data.sprites.front_default
+            } else {
+                document.getElementById("alert").innerText = "Choose a different pokemon"
             }
-            document.getElementById(`button${index}player2`).classList.add("selected")
-            player2pokemon = pokemonInfo.data.sprites.front_default
         })
+    }
+}
+const iaLevel = () => {
+    if(hardIA){
+        hardIA = false
+        document.getElementById("levelIA").innerHTML = "Level: Rookie"
+    } else {
+        hardIA = true
+        document.getElementById("levelIA").innerHTML = "Level: Master"
     }
 }
 

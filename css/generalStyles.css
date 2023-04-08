@@ -10,7 +10,8 @@
 .up-div {
     border: .3rem solid rgb(68, 0, 0);
     border-radius: .5rem;
-    background: linear-gradient(to top, rgb(172, 0, 0), rgb(218, 1, 1));
+    background: radial-gradient(circle at 12% 9%,rgb(51, 214, 255) 2%, rgb(25, 122, 233) 4%, rgb(0, 89, 255) 5%, transparent 5.4%),
+    linear-gradient(to top, rgb(172, 0, 0), rgb(218, 1, 1));
     box-shadow: inset 0 0 .9rem rgba(0, 0, 0, 0.308)
 }
 

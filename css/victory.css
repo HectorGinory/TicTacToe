@@ -1,0 +1,31 @@
+.victory-container {
+    width: 40rem;
+    height: 20rem;
+    background: linear-gradient(to top, rgb(172, 0, 0), rgb(218, 1, 1));
+}
+
+.screen {
+    width: 60%;
+    height: 60%;
+    color: white;
+    background: black;
+    border-radius: .5rem;
+    border: 2px solid white;
+    margin: .5rem;
+    box-shadow: .2rem .2rem .3rem rgba(0, 0, 0, 0.288);
+}
+
+.pokemon-img {
+    height: 5rem;
+    width: 5rem;
+}
+
+.victory-container button {
+    padding: 1rem 2rem;
+    border-radius: 10rem;
+    transition: .2s;
+}
+
+.victory-container button:hover {
+    background: grey;
+}

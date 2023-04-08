@@ -3,6 +3,7 @@
 @import url('./menu.css');
 @import url('./game.css');
 @import url('./newGame.css');
+@import url('./victory.css');
 
 /* Variables */
 :root {
@@ -28,3 +29,15 @@ body {
 button, a, .box {
     cursor: pointer;
 }
+::-webkit-scrollbar {
+    height: 70%;
+    width: 15px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0, 255, 242);
+    width: 10px;
+    transition: .2s;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(0, 26, 255);
+  }
