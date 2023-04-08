@@ -85,4 +85,4 @@ And you can remove doing the same.
 
 ## Victory view ##
 
-If you want to see the victory view why dont you<a href="https://hectorginory.github.io/TicTacToe/">try it?</a>
+If you want to see the victory view why dont you<a href="https://hectorginory.github.io/TicTacToe/"> try it?</a>
