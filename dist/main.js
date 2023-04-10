@@ -117,7 +117,7 @@ const removePiece = (row, column, n) => {
         removedPiece = [row, column, n];
         if (vsIA && playerPlaying === player2) {
             let indexRemoved;
-            iaPlaces.map((e, i) => {
+            iaPlaces.forEach((e, i) => {
                 if (e[0] === row && e[1] === column && e[2] === n) {
                     indexRemoved = i;
                     removedPiece = [row, column, n];
