@@ -49,7 +49,6 @@ const createTable = (n) => {
     }
 };
 const turnsPlayer = () => {
-    if (vsIA) {
         if(playerPlaying !== player1) {
             document.getElementById("gamePlayer1").classList.add("turnToPlay")
             document.getElementById("gamePlayer2").classList.remove("turnToPlay")
@@ -59,29 +58,12 @@ const turnsPlayer = () => {
         }
         if (playerPlaying === player1) {
             playerPlaying = player2;
-            randomIAClick();
+            if (vsIA) randomIAClick();
         }
         else {
             playerPlaying = player1;
         }
-    }
-    else {
-        if(playerPlaying !== player1) {
-            document.getElementById("gamePlayer1").classList.add("turnToPlay")
-            document.getElementById("gamePlayer2").classList.remove("turnToPlay")
-        } else {
-            document.getElementById("gamePlayer1").classList.remove("turnToPlay")
-            document.getElementById("gamePlayer2").classList.add("turnToPlay")
-        }
-        if (playerPlaying === player1) {
-            playerPlaying = player2;
-        }
-        else {
-            playerPlaying = player1;
-        }
-    }
-
-};
+}
 
 // Functions for placing and removing the coins
 const boxOnClick = (rowArr, colArr, i) => {
@@ -89,8 +71,7 @@ const boxOnClick = (rowArr, colArr, i) => {
         removePiece(rowArr, colArr, i);
         changesGamePage(0);
         changesGamePage(1);
-    }
-    else if (playerPlaying.turns > 0 && table[rowArr][colArr] === " ") {
+    } else if (playerPlaying.turns > 0 && table[rowArr][colArr] === " ") {
         setPiece(rowArr, colArr, i);
         changesGamePage(0);
         changesGamePage(1);
@@ -104,8 +85,7 @@ const boxOnClick = (rowArr, colArr, i) => {
             victory();
         }
         turnsPlayer();
-    }
-    else if (vsIA === true && playerPlaying === player2) {
+    } else if (vsIA === true && playerPlaying === player2) {
         randomIAClick();
     }
 };
@@ -273,8 +253,7 @@ const randomIAClick = () => {
                 places = iaChecks(player2.character)[1];
                 boxOnClick(places[0], places[1], places[2]);
                 return null
-            }
-            else if (iaChecks(player1.character)[0]) {
+            } else if (iaChecks(player1.character)[0]) {
                 places = iaChecks(player1.character)[1];
                 boxOnClick(places[0], places[1], places[2]);
                 return null
