@@ -279,7 +279,7 @@ const randomIAClick = () => {
                 boxOnClick(places[0], places[1], places[2]);
                 return null
             }
-         }
+            }
             let randomRow = (Math.round(Math.random() * 2));
             let randomCol = (Math.round(Math.random() * 2));
             let randomI = (randomRow * 3) + randomCol;

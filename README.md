@@ -4,11 +4,14 @@
 - **Tecnologies:**  HTML5, CSS3, JavaScript - ES6, Git
 
 <a href="https://hectorginory.github.io/TicTacToe/">Click here to see the deploy.</a>
+
 ## Challenge ##
+
 The challenge was to create a program that allows us to play
 tic tac toe against a human opponent or against the machine.
 
 ### Objectives ###
+
 - The user must be able to start a new game by entering their
 name and choosing the game mode (human vs human or human vs
 machine).
